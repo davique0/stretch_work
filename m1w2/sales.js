@@ -1,10 +1,14 @@
 const calculateSalesTax = (salesData, taxRate) => {
-  //given an object with company name, provinces and an array of sales it should return an object with company name, total sales and total taxes, tax rate taken from and object with rates per province
-
   let result = {};
   for (const item of salesData){
-    for (const key in item) {
-      console.log(key)
+    if (!result[item.name]) {
+      result[item.name] = {
+        'totalSales': item.sales.reduce((a, b) => a + b, 0),
+        'totalTax': item.sales.map(x => x * salesTaxRates[item.province]).reduce((a, b) => a + b, 0)
+      }
+    } else {
+      result[item.name].totalSales += item.sales.reduce((a, b) => a + b, 0);
+      result[item.name].totalTax += item.sales.map(x => x * salesTaxRates[item.province]).reduce((a, b) => a + b, 0);
     }
   }
 }
